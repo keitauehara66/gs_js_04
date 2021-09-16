@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログインページ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">  
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <!-- formタグだと、なぜかgoogleでのログインができない（firebaseに繋がらない）。divタグにしたら解消した。理由は謎のまま。 -->
+    <!-- <div action="index.html" onsubmit="return Login.doLogin(this)"> -->
+    <div>
+        <h1>Login</h1>
+        <!-- 入力エリア -->
+        <h2>＜googleでログイン＞</h2>
+        <p><input id="login_btn" type="image" src="img/btn_google_signin_light_pressed_web.png" alt="google" class="google_btn"></p>
+        <h2>＜メールアドレスでログイン＞</h2>
+        <p><i class="fas fa-envelope"></i><input id="email" class="inputMail" type="email" placeholder="Mail"></p>
+        <p><i class="fas fa-key"></i><input id="password" class="inputPswd" type="password" placeholder="Password"></p>
+        <button id="login" class="login">LOGIN</button>
+        <p class="forget"><a href="undercnst.html" class="forgetText">パスワードを忘れた方</a></p>
+        <p class="reg"><a href="signup.html" class="regText">はじめての方<br>（Mailを登録する）</a></p>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+
+    <script type="module">
+        // モジュールにするとimport/exportが使える、最後に読み込まれる？
+        var firebaseConfig = {
+            apiKey: "",
+            authDomain: "chat-app-e5c0c.firebaseapp.com",
+            // 今回はrealtime databaseは使わないが、念の為入れておく
+            databaseURL: "https://chat-app-e5c0c-default-rtdb.firebaseio.com/",
+            projectId: "chat-app-e5c0c",
+            storageBucket: "chat-app-e5c0c.appspot.com",
+            messagingSenderId: "601689636329",
+            appId: "1:601689636329:web:af8eb7f23175c1942ddf78"
+        };
+
+        if(firebase.apps.length == 0){
+            // firebaseの初期化
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        window.onload = () => {
+            const login_btn = document.querySelector('#login_btn');
+            const db = firebase.firestore();
+            const room = db.collection('room');
+
+            // googleでログインする機構を作る
+            login_btn.addEventListener('click', () => {
+                // Googleログインのインスタンスとして決まっているもの？firebaseのページに書いてある
+                const google_provider = new firebase.auth.GoogleAuthProvider()
+                firebase.auth()
+                    .signInWithPopup(google_provider)
+                    .then(result => {
+                        window.user = result.user;
+                    }).catch(err => alert(err.message));
+            })
+            // console.log(firebase.apps);
+        }
+
+        // メール＆パスワードでログインするクリックイベント  
+        $("#login").on("click",function(){
+            const email = $("#email").val();
+            const password = $("#password").val();
+
+            // console.log(email)
+            // console.log(password)
+
+            // firebaseのページにあったユーザログインのやり方をみて試行錯誤
+            const loginWithEmailAndPassword = firebase.auth().signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                var user = userCredential.user;
+                alert("ログイン成功");
+                return user;
+                // console.log("user情報：", user);
+                })
+            .catch((error) => {
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                alert("メールアドレスまたはパスワードが違います。");
+                // console.log(error);
+            });
+        });        
+
+            // ログインに成功したらチャットページへ遷移
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    window.location.href = 'index.html';
+                    window.user = user;
+                } else {
+                    return;
+                }
+            });
+    </script>
+
+</body>
+</html>
+
+<!-- 参考サイト -->
+<!-- ログインページのHTML、CSSは以下のYoutube
+https://www.youtube.com/watch?v=JB6NoQHklVM -->
+<!-- scriptタグの中は手探りで作成 -->
+

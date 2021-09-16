@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サインアップページ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">  
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/signup.css">
+</head>
+<body>
+    <form action="#">
+        <h1>Sing up</h1>
+        <!-- 入力エリア -->
+        <p><i class="fas fa-envelope"></i><input id="email" class="inputMail" type="email" placeholder="Mail"></p>
+        <p><i class="fas fa-key"></i><input id="password" class="inputPswd" type="password" placeholder="Password"></p>
+        <p><i class="fas fa-key"></i><input id="password2" class="inputPswd" type="password" placeholder="Password again" aria-label="確認のためもう一度パスワードを入力"></p>
+        <input id="signup" class="signup" type="submit" value="Sign up">
+        <p class="totop"><a href="login.html" class="totopText">ログインページへ</a></p>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+
+    <script type="module">
+        // モジュールにするとimport/exportが使える、最後に読み込まれる？
+        var firebaseConfig = {
+            apiKey: "",
+            authDomain: "chat-app-e5c0c.firebaseapp.com",
+            // 今回はrealtime databaseは使わないが、念の為入れておく
+            databaseURL: "https://chat-app-e5c0c-default-rtdb.firebaseio.com/",
+            projectId: "chat-app-e5c0c",
+            storageBucket: "chat-app-e5c0c.appspot.com",
+            messagingSenderId: "601689636329",
+            appId: "1:601689636329:web:af8eb7f23175c1942ddf78"
+        };
+        firebase.initializeApp(firebaseConfig);
+            
+        // サインアップ　クリックイベント  
+        $("#signup").on("click",function(){
+            const email = $("#email").val();
+            const password = $("#password").val();
+            const password2 = $("#password2").val();
+
+            // console.log(email)
+            // console.log(password)
+            // console.log(password2)
+
+            // firebaseのページにあったユーザ登録のやり方をみて試行錯誤
+            if(password === password2){
+                const signupWithEmailAndPassword = firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    var user = userCredential.user;
+                    alert("登録に成功しました。\nログインページに戻ってログインしてください。");
+                    return user;
+                    console.log("user情報：", user);
+                }).catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    if(errorCode == "auth/invalid-email"){
+                        alert("メールアドレスの形式が不正です。\n入力し直してください。");
+                        $("#email").val("");
+                        $("#password").val("");
+                        $("#password2").val("");
+                    }if(errorCode == "auth/weak-password"){
+                        alert("パスワードは6桁以上で設定してください。");
+                        $("#password").val("");
+                        $("#password2").val("");
+                    }if(errorCode == "auth/email-already-in-use"){
+                        alert("登録済みのメールアドレスです。\nログインページに戻ってログインしてください。");
+                        $("#password").val("");
+                        $("#password2").val("");
+                    }
+                    console.log(error);
+                });
+            }else{
+                alert("パスワードが一致しません。入力し直してください。");
+                $("#password").val("");
+                $("#password2").val("");
+            }
+        });
+
+    </script>
+
+</body>
+</html>
+
+<!-- 参考サイト -->
+<!-- ログインページのHTML、CSSは以下のYoutube
+https://www.youtube.com/watch?v=JB6NoQHklVM -->
+<!-- scriptタグの中は手探りで作成 -->

@@ -1,0 +1,91 @@
+@charset "utf-8";
+
+/* 全体 */
+body{
+    background-color: #fff;
+    background-image: url("../img/signup.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* サインアップフォーム */
+form{
+    background-color: rgba(255,0,0,0.5);
+    width: 380px;
+    height: 465px;
+    margin: 50vh auto 0;
+    transform: translateY(-50%);
+    border-radius: 30px;
+}
+form h1{
+    color: #fff;
+    font-size: 20px;
+    font-weight: bolder;
+    text-align: center;
+    padding-top: 60px;
+}
+/* アイコン */
+.fas{
+    color: #fff;
+    font-size: 20px;
+    margin-right: 15px;
+}
+/* 入力欄 */
+form p{
+    width: 300px;
+    margin: 0 auto;
+}
+input{
+    outline: none;
+}
+.inputMail, .inputPswd{
+    width: 215px;
+    height: 45px;
+    border-radius: 10px;
+    border:none;
+    background-color: rgba(255,255,255,0.6);
+    padding-left: 15px;
+    font-size: 18px;
+    color: #fff;
+}
+.inputMail{
+    margin-top: 40px;
+}
+.inputPswd{
+    margin-top: 25px;
+}
+.inputMail::placeholder, .inputPswd::placeholder{
+    color: rgba(255,255,255,0.7);
+}
+/* サインアップボタン */
+.signup{
+    width: 190px;
+    height: 45px;
+    background-color: #f0f;
+    display: block;
+    margin: 0 auto;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    line-height: 45px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 30px;
+    cursor: pointer;
+}
+/* ログインページへ */
+.totop{
+    width: 160px;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 20px;
+}
+.totopText{
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
+}
+.totopText:hover{
+    color: #f0f;
+}

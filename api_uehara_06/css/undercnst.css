@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+/* 全体 */
+body{
+    background-color: #000;
+    background-image: url("../img/undercnst.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* サインアップフォーム */
+form{
+    background-color: rgba(0,0,0,0.5);
+    width: 380px;
+    height: 465px;
+    margin: 50vh auto 0;
+    transform: translateY(-50%);
+    border-radius: 30px;
+}
+form h1{
+    color: #fff;
+    font-size: 20px;
+    font-weight: bolder;
+    text-align: center;
+    line-height: 30px;
+    padding-top: 190px;
+}
+/* ログインページへ */
+.totop{
+    width: 160px;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 20px;
+}
+.totopText{
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
+}
+.totopText:hover{
+    color: #ffa500;
+}
